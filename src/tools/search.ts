@@ -200,4 +200,87 @@ export function registerSearchTools(server: McpServer, curviate: Curviate): void
         }),
       ),
   );
+
+  server.registerTool(
+    "search_services",
+    {
+      title: "Search LinkedIn service providers",
+      description:
+        "Search people offering services on LinkedIn (the Services vertical) by keywords, service category, " +
+        "location, connection degree, and profile language. At least one of keywords, service_category, or " +
+        "location is required. Use search_people for general member search instead, this tool only returns " +
+        "service providers.",
+      inputSchema: {
+        account_id: z.string().describe("The connected account id to search as."),
+        keywords: z.string().optional().describe("Free-text keyword match."),
+        service_category: z.array(z.string()).optional().describe("Opaque service-category ids."),
+        location: z.array(z.string()).optional().describe("Opaque location ids."),
+        connections: z
+          .array(z.union([z.literal(1), z.literal(2), z.literal(3)]))
+          .optional()
+          .describe("Connection degree filter: 1 = 1st, 2 = 2nd, 3 = 3rd+."),
+        language: z.array(z.string()).optional().describe("Profile-language ISO 639-1 codes (e.g. en, de, es, fr)."),
+        limit: z.number().int().min(1).max(50).optional().describe("Results per page (1-50, default 10)."),
+        cursor: z.string().optional().describe("Opaque pagination cursor from a prior response."),
+      },
+      annotations: { readOnlyHint: true, destructiveHint: false },
+    },
+    async ({ account_id, limit, cursor, ...body }) =>
+      runTool(() =>
+        curviate.account(account_id).search.services({
+          ...body,
+          ...(limit !== undefined ? { limit } : {}),
+          ...(cursor !== undefined ? { cursor } : {}),
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "search_from_url",
+    {
+      title: "Search from a pasted LinkedIn URL",
+      description:
+        "Run a pasted LinkedIn search, saved-search re-run, or lead-list URL directly instead of building " +
+        "structured filters yourself. url is the only accepted field. Each result item is discriminated " +
+        "individually by its own object value (a person, a company, a post, or a job), so a single call can " +
+        "return a mix of kinds. Use search_people, search_companies, search_posts, or search_jobs when the " +
+        "target entity is already known instead of pasting a URL.",
+      inputSchema: {
+        account_id: z.string().describe("The connected account id to search as."),
+        url: z.string().describe("A pasted LinkedIn search URL, saved-search re-run URL, or lead-list URL."),
+        offset: z.number().int().min(0).optional().describe("Zero-based pagination offset."),
+        limit: z.number().int().min(1).max(50).optional().describe("Results per page (1-50, default 10)."),
+        cursor: z.string().optional().describe("Opaque pagination cursor from a prior response."),
+      },
+      annotations: { readOnlyHint: true, destructiveHint: false },
+    },
+    async ({ account_id, url, offset, limit, cursor }) =>
+      runTool(() =>
+        curviate.account(account_id).search.fromUrl({
+          url,
+          ...(offset !== undefined ? { offset } : {}),
+          ...(limit !== undefined ? { limit } : {}),
+          ...(cursor !== undefined ? { cursor } : {}),
+        }),
+      ),
+  );
+
+  server.registerTool(
+    "search_groups",
+    {
+      title: "Search LinkedIn groups",
+      description:
+        "Keyword search for LinkedIn groups. Keyword-only, no filter-id resolution step, the simplest member " +
+        "of the search family. A no-match search returns an empty list, not an error. Group ids chain into " +
+        "list_group_members.",
+      inputSchema: {
+        account_id: z.string().describe("The connected account id to search as."),
+        keywords: z.string().describe("Search terms for LinkedIn groups, multi-word supported (e.g. \"gtm engineering\")."),
+        limit: z.number().int().min(1).max(100).optional().describe("Results per page (1-100, default 10)."),
+        cursor: z.string().optional().describe("Opaque pagination cursor from a prior response."),
+      },
+      annotations: { readOnlyHint: true, destructiveHint: false },
+    },
+    async ({ account_id, ...params }) => runTool(() => curviate.account(account_id).search.groups(params)),
+  );
 }
