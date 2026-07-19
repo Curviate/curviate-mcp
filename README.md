@@ -120,23 +120,55 @@ Every tool takes an `account_id`, the connected LinkedIn account to act as (from
 | `list_accounts` | List the tenant's connected LinkedIn accounts. |
 | `get_account` | Get metadata and quota state for one connected account. |
 | `get_profile` | Retrieve a LinkedIn member's profile. |
+| `update_my_profile` | Update the caller's own profile fields, photo, and cover photo. |
+| `list_profile_activity` | List a person's posts, comments, reactions, or saved posts. |
+| `list_network` | List a person's connections, followers, or following. |
+| `get_my_insights` | Get the caller's own subscription, analytics, visitors, SSI, and InMail credits. |
+| `endorse_skill` | Endorse a 1st-degree connection's skill. |
+| `follow_user` | Follow a LinkedIn member. |
+| `unfollow_user` | Unfollow a LinkedIn member. |
 | `search_people` | Search LinkedIn members with structured filters. |
 | `search_companies` | Search LinkedIn company pages with structured filters. |
 | `search_posts` | Search LinkedIn posts with structured filters. |
 | `search_jobs` | Search LinkedIn job postings with structured filters. |
+| `search_services` | Search LinkedIn service providers. |
+| `search_from_url` | Run a pasted LinkedIn search URL directly. |
+| `search_groups` | Keyword search for LinkedIn groups. |
+| `list_group_members` | List a group's members. |
 | `get_company` | Retrieve a LinkedIn company page's full profile. |
+| `browse_company` | List a company page's employees, posts, jobs, or followers. |
+| `list_managed_companies` | List company pages the account administers. |
 | `list_chats` | List the account's conversations. |
 | `read_chat` | List the messages in one chat. |
 | `start_chat` | Start a new conversation and send the opening message. |
 | `send_message` | Send a message into an existing chat. |
+| `edit_message` | Edit a previously sent message. |
+| `delete_message` | Delete a previously sent message. |
+| `react_to_message` | Add a native emoji reaction to a chat message. |
+| `update_chat` | Mark a chat read or unread. |
 | `get_feed` | Read the account's LinkedIn home feed. |
+| `list_notifications` | List the account's LinkedIn notifications. |
+| `dismiss_notification` | Delete or show-less a notification. |
 | `get_post` | Retrieve a single post's full detail. |
 | `create_post` | Publish a new post. |
+| `delete_post` | Delete a post the account owns. |
+| `list_post_engagement` | List a post's or comment's comments, replies, or reactions. |
+| `save_post` | Save or unsave a post to the account's bookmark list. |
 | `add_comment` | Comment on a post. |
+| `update_comment` | Edit a comment the account authored. |
+| `delete_comment` | Delete a comment the account authored. |
 | `add_reaction` | React to a post. |
+| `remove_reaction` | Remove the account's reaction from a post. |
 | `list_invitations` | List received or sent connect-requests. |
 | `send_connection_request` | Send a connect-request to a member. |
 | `respond_to_invitation` | Accept or decline a received connect-request. |
+| `withdraw_invitation` | Withdraw a connect-request the account sent. |
+| `list_jobs` | List the account's own job postings. |
+| `get_job` | Get a job posting, optionally with its budget. |
+| `create_job_draft` | Create a classic job posting draft. |
+| `edit_job` | Edit a job posting the account owns. |
+| `transition_job` | Publish or close a job posting. |
+| `list_job_applicants` | List a job posting's applicants, or fetch one applicant. |
 
 Each tool's input schema and read-only/destructive annotations are discoverable through `tools/list`, standard
 MCP introspection, no separate reference is needed to see the exact parameters.
@@ -150,11 +182,12 @@ agent branching on `code` sees exactly what the REST API would have returned.
 
 ## Roadmap
 
-v1 ships the highest-value core read and core write tools (20 total, listed above). Additional tools land
-incrementally as the surface grows toward parity with the hosted MCP endpoint: recruiter and Sales Navigator
-search, groups, notifications, job posting and applicant management, saved posts, follows, endorsements, company
-page admin messaging, and webhook management. Each addition is one file under `src/tools/`, no architecture
-change required.
+v1 shipped the highest-value core read and core write tools (20 total). This tranche adds profile management and
+insights, following, company browsing, messaging extras, notifications, post and comment lifecycle management,
+connect-request withdrawal, classic job postings, and the remaining search surface (52 total). Additional tools
+land incrementally as the surface grows toward full parity with the hosted MCP endpoint: Sales Navigator search
+and outreach, Recruiter search and project/pipeline management, company page admin messaging and follow-invite
+campaigns, and webhook management. Each addition is one file under `src/tools/`, no architecture change required.
 
 ## License
 

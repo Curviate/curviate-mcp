@@ -15,6 +15,7 @@ describe("curviate-mcp server", () => {
     const names = tools.map((tool) => tool.name);
 
     const expectedNames = [
+      // v1
       "list_accounts",
       "get_account",
       "get_profile",
@@ -35,6 +36,47 @@ describe("curviate-mcp server", () => {
       "list_invitations",
       "send_connection_request",
       "respond_to_invitation",
+      // profile extras
+      "update_my_profile",
+      "list_profile_activity",
+      "list_network",
+      "get_my_insights",
+      "endorse_skill",
+      // following
+      "follow_user",
+      "unfollow_user",
+      // companies
+      "browse_company",
+      "list_managed_companies",
+      // messaging extras
+      "edit_message",
+      "delete_message",
+      "react_to_message",
+      "update_chat",
+      // notifications
+      "list_notifications",
+      "dismiss_notification",
+      // posts extras
+      "delete_post",
+      "list_post_engagement",
+      "update_comment",
+      "delete_comment",
+      "remove_reaction",
+      "save_post",
+      // invites extras
+      "withdraw_invitation",
+      // jobs
+      "list_jobs",
+      "get_job",
+      "create_job_draft",
+      "edit_job",
+      "transition_job",
+      "list_job_applicants",
+      // search extras
+      "search_services",
+      "search_from_url",
+      "search_groups",
+      "list_group_members",
     ];
 
     for (const expected of expectedNames) {
@@ -82,6 +124,37 @@ describe("curviate-mcp server", () => {
     const parsed = JSON.parse(content[0]?.text ?? "{}") as { name?: string; code?: string };
     expect(parsed.name).toBe("CurviateError");
     expect(parsed.code).toBe("UNAUTHORIZED");
+
+    await client.close();
+    await server.close();
+  });
+
+  it("calls a tool from the new tranche (follow_user) against a mocked SDK", async () => {
+    const fakeFollowFetch: typeof fetch = async () =>
+      new Response(JSON.stringify({ object: "user_followed" }), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+
+    const server = createServer({
+      apiKey: "cvt_test_fake_key",
+      version: "0.1.0",
+      fetch: fakeFollowFetch,
+    });
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const client = new Client({ name: "smoke-test-client", version: "0.0.0" });
+
+    await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
+
+    const result = await client.callTool({
+      name: "follow_user",
+      arguments: { account_id: "acc_test", user_id: "ACoAAtest" },
+    });
+
+    expect(result.isError).toBeFalsy();
+    const content = result.content as Array<{ type: string; text: string }>;
+    const parsed = JSON.parse(content[0]?.text ?? "{}") as { object?: string };
+    expect(parsed.object).toBe("user_followed");
 
     await client.close();
     await server.close();
