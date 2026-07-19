@@ -1,0 +1,54 @@
+{
+  "name": "@curviate/mcp",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Official MCP server for the Curviate API: LinkedIn actions for AI agents, over stdio.",
+  "license": "MIT",
+  "type": "module",
+  "mcpName": "com.curviate/mcp",
+  "homepage": "https://docs.curviate.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Curviate/curviate-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Curviate/curviate-mcp/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "curviate-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "prepack": "npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src test",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@curviate/sdk": "^0.18.1",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.17"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "eslint": "^9.0.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^3.2.2"
+  }
+}
