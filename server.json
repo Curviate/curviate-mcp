@@ -1,0 +1,48 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.curviate/mcp",
+  "description": "Official MCP server for the Curviate API: LinkedIn actions for AI agents.",
+  "repository": {
+    "url": "https://github.com/Curviate/curviate-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@curviate/mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "CURVIATE_API_KEY",
+          "description": "Your Curviate API key, from app.curviate.com.",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "CURVIATE_BASE_URL",
+          "description": "Override the API base URL. Optional.",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://app.curviate.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Bearer <your-api-key>",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
