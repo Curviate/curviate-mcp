@@ -107,4 +107,83 @@ export function registerMessagingTools(server: McpServer, curviate: Curviate): v
     async ({ account_id, chat_id, ...body }) =>
       runTool(() => curviate.account(account_id).messaging.sendMessage(chat_id, body)),
   );
+
+  server.registerTool(
+    "edit_message",
+    {
+      title: "Edit a sent message",
+      description:
+        "Replace the text of a previously sent message, within a roughly 60-minute edit window measured " +
+        "from when it was sent. Past that window this returns MESSAGE_WINDOW_EXPIRED and the message is " +
+        "unchanged, there is no way to extend the window. Use delete_message instead to remove a message " +
+        "entirely rather than replace its text.",
+      inputSchema: {
+        account_id: z.string().describe("The connected account id that owns the chat."),
+        chat_id: z.string().describe("The chat id containing the message."),
+        message_id: z.string().describe("The message id to edit, from send_message or read_chat."),
+        text: z.string().min(1).max(8000).describe("Replacement message text (1-8000 chars)."),
+      },
+      annotations: { readOnlyHint: false, destructiveHint: false },
+    },
+    async ({ account_id, chat_id, message_id, text }) =>
+      runTool(() => curviate.account(account_id).messaging.editMessage(chat_id, message_id, { text })),
+  );
+
+  server.registerTool(
+    "delete_message",
+    {
+      title: "Delete a sent message",
+      description:
+        "Delete a previously sent message, within a roughly 60-minute delete window measured from when it " +
+        "was sent. Past that window this returns MESSAGE_WINDOW_EXPIRED and the message is left in place. " +
+        "This cannot be undone within the window either, once deleted the message is gone for every " +
+        "participant.",
+      inputSchema: {
+        account_id: z.string().describe("The connected account id that owns the chat."),
+        chat_id: z.string().describe("The chat id containing the message."),
+        message_id: z.string().describe("The message id to delete, from send_message or read_chat."),
+      },
+      annotations: { readOnlyHint: false, destructiveHint: true },
+    },
+    async ({ account_id, chat_id, message_id }) =>
+      runTool(() => curviate.account(account_id).messaging.deleteMessage(chat_id, message_id)),
+  );
+
+  server.registerTool(
+    "react_to_message",
+    {
+      title: "React to a message",
+      description:
+        "Add a native LinkedIn emoji reaction to a chat message. This reacts to a message inside a chat, not " +
+        "a post or a comment, use add_reaction instead for those. Sending the same reaction again replaces " +
+        "the prior one rather than stacking.",
+      inputSchema: {
+        account_id: z.string().describe("The connected account id that owns the chat."),
+        chat_id: z.string().describe("The chat id containing the message."),
+        message_id: z.string().describe("The message id to react to, from send_message or read_chat."),
+        reaction: z.string().describe("A native LinkedIn reaction emoji, e.g. \"👍\"."),
+      },
+      annotations: { readOnlyHint: false, destructiveHint: false },
+    },
+    async ({ account_id, chat_id, message_id, reaction }) =>
+      runTool(() => curviate.account(account_id).messaging.addReaction(chat_id, message_id, { reaction })),
+  );
+
+  server.registerTool(
+    "update_chat",
+    {
+      title: "Mark a chat read or unread",
+      description:
+        "Mark a chat read or unread. This is a one-field status change, read is required and must be a " +
+        "boolean, true marks it read and false marks it unread.",
+      inputSchema: {
+        account_id: z.string().describe("The connected account id that owns the chat."),
+        chat_id: z.string().describe("The chat id to update, from list_chats."),
+        read: z.boolean().describe("Mark the chat read (true) or unread (false)."),
+      },
+      annotations: { readOnlyHint: false, destructiveHint: false },
+    },
+    async ({ account_id, chat_id, read }) =>
+      runTool(() => curviate.account(account_id).messaging.markChatRead(chat_id, { read })),
+  );
 }
