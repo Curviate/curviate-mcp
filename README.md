@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/curviate-lockup-horizontal-dark.png">
+  <img alt="Curviate" src="./assets/curviate-lockup-horizontal-light.png" width="360">
+</picture>
+
 # @curviate/mcp
 
 Official [Model Context Protocol](https://modelcontextprotocol.io) server for the
