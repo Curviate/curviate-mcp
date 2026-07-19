@@ -75,4 +75,22 @@ export function registerInviteTools(server: McpServer, curviate: Curviate): void
       return runTool(() => acc.invites.decline(invitation_id));
     },
   );
+
+  server.registerTool(
+    "withdraw_invitation",
+    {
+      title: "Withdraw a sent connect-request",
+      description:
+        "Withdraw a connect-request the connected account previously sent, before the recipient has " +
+        "responded. An already-absent or unrecognized invitation_id returns a not_found status rather than " +
+        "an error. This cannot be undone, and LinkedIn blocks re-inviting the same member for a period " +
+        "afterward. Use respond_to_invitation instead to accept or decline a request the account received.",
+      inputSchema: {
+        account_id: z.string().describe("The connected account id that sent the connect-request."),
+        invitation_id: z.string().describe("The sent connect-request's id to withdraw, from list_invitations."),
+      },
+      annotations: { readOnlyHint: false, destructiveHint: true },
+    },
+    async ({ account_id, invitation_id }) => runTool(() => curviate.account(account_id).invites.cancel(invitation_id)),
+  );
 }
