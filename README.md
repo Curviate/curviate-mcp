@@ -170,6 +170,56 @@ Every tool takes an `account_id`, the connected LinkedIn account to act as (from
 | `transition_job` | Publish or close a job posting. |
 | `list_job_applicants` | List a job posting's applicants, or fetch one applicant. |
 
+### Sales Navigator
+
+Requires a Sales Navigator seat on the connected account; a seat-less account gets a structured
+`TIER_NOT_ACTIVE` error, not a silent downgrade. Most id-bearing filters take an already-resolved opaque
+parameter id, this package does not resolve free-text names to ids.
+
+| Tool | Description |
+|---|---|
+| `sn_search_people` | Search LinkedIn members using Sales Navigator's richer filter set. |
+| `sn_search_companies` | Search LinkedIn companies using Sales Navigator's richer filter set. |
+| `sn_search_from_url` | Run a pasted Sales Navigator search, saved-search, or lead-list URL directly. |
+| `sn_get_profile` | Get a LinkedIn profile with Sales Navigator enrichment. |
+| `sn_start_chat` | Start a Sales Navigator InMail-style chat and send the opening message. |
+| `sn_list_lists` | List the operator's Sales Navigator account lists or lead lists. |
+| `sn_save_lead` | Save a LinkedIn member into a Sales Navigator lead list. |
+| `sn_save_account` | Save a LinkedIn company into a Sales Navigator account list. |
+
+### Recruiter
+
+Requires a Recruiter seat on the connected account, same `TIER_NOT_ACTIVE` behavior as Sales Navigator above.
+
+| Tool | Description |
+|---|---|
+| `rec_search_candidates` | Search LinkedIn members using Recruiter's filter set. |
+| `rec_search_talent_pool` | Search a Recruiter project's talent pool. |
+| `rec_search_from_url` | Run a pasted Recruiter search, talent-pool, or applicant URL directly. |
+| `rec_get_profile` | Get a LinkedIn profile with Recruiter enrichment. |
+| `rec_start_chat` | Start a Recruiter InMail-style chat and send the opening message. |
+| `rec_list_projects` | List Recruiter hiring projects, or fetch one project's full detail. |
+| `rec_edit_project` | Edit a Recruiter project's config. |
+| `rec_list_pipeline` | List candidates in a Recruiter project's pipeline. |
+| `rec_save_candidate` | Save a candidate to a Recruiter project's pipeline. |
+| `rec_list_applicants` | List a project's talent-pool applicants, or fetch one applicant. |
+| `rec_list_jobs` | List Recruiter job postings, or fetch one, optionally with its budget. |
+| `rec_create_job_draft` | Create a Recruiter job posting draft, in a new or existing project. |
+| `rec_edit_job` | Edit a Recruiter job posting. |
+| `rec_transition_job` | Publish or close a Recruiter job posting. |
+
+### Company Admin
+
+Page-admin only, beta. The connected account must administer the target page (from `list_managed_companies`);
+an account that does not gets a structured `RESOURCE_ACCESS_RESTRICTED` error before anything is read or sent.
+
+| Tool | Description |
+|---|---|
+| `list_company_chats` | List conversations in a company page's admin inbox. |
+| `read_company_chat` | Read a company page's admin inbox chat, or a message within it. |
+| `reply_company_chat` | Reply to a company inbox conversation as the page. |
+| `invite_followers` | Invite connections to follow a company page. |
+
 Each tool's input schema and read-only/destructive annotations are discoverable through `tools/list`, standard
 MCP introspection, no separate reference is needed to see the exact parameters.
 
@@ -182,12 +232,24 @@ agent branching on `code` sees exactly what the REST API would have returned.
 
 ## Roadmap
 
-v1 shipped the highest-value core read and core write tools (20 total). This tranche adds profile management and
-insights, following, company browsing, messaging extras, notifications, post and comment lifecycle management,
-connect-request withdrawal, classic job postings, and the remaining search surface (52 total). Additional tools
-land incrementally as the surface grows toward full parity with the hosted MCP endpoint: Sales Navigator search
-and outreach, Recruiter search and project/pipeline management, company page admin messaging and follow-invite
-campaigns, and webhook management. Each addition is one file under `src/tools/`, no architecture change required.
+v1 shipped the highest-value core read and core write tools (20 total). A second tranche added profile
+management and insights, following, company browsing, messaging extras, notifications, post and comment
+lifecycle management, connect-request withdrawal, classic job postings, and the remaining search surface (52
+total). This tranche adds Sales Navigator search and outreach, Recruiter search and project/pipeline/job
+management, and company page admin inbox and follow-invite tools (78 total), reaching full tool-surface parity
+with the hosted MCP endpoint.
+
+**Intentionally excluded, not planned for this package:** `list_toolsets`, `enable_toolsets`, and
+`explain_tools` (the hosted server's Meta group) manage a *remote* server's dynamically gated toolset for a
+wide range of MCP clients; a local stdio package has one fixed toolset decided at install time, so there is
+nothing for them to gate. `search` and `fetch` (the hosted server's ChatGPT deep-research compatibility shim)
+exist only to satisfy ChatGPT's connector contract for a remote server; a locally-spawned stdio process has no
+such contract to satisfy. All five are hosted-server-specific by design, not a gap in this package.
+
+This closes the gap with the hosted MCP endpoint's tool surface (78 tools each, the same count as above once
+the five hosted-server-specific tools are set aside). Webhook management (create/list/update/delete
+subscriptions) is REST/CLI-only, the hosted MCP endpoint does not expose it as tools either. Each future
+addition is one file under `src/tools/`, no architecture change required.
 
 ## License
 

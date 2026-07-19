@@ -3,7 +3,10 @@
  *
  * v1 shipped the highest-value core read + core write tools (~19). Additional
  * tool groups land incrementally, one file per group, each registered here.
- * See the README's Roadmap section for what is planned next.
+ * This tranche adds Sales Navigator, Recruiter, and Company Admin, reaching
+ * full parity with the hosted MCP endpoint's tool surface (minus the
+ * hosted-server-specific Meta and ChatGPT-compatibility tools, see the
+ * README's Roadmap section for that exclusion).
  */
 import type { Curviate } from "@curviate/sdk";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -21,6 +24,9 @@ import { registerCommentTools } from "./comments.js";
 import { registerInviteTools } from "./invites.js";
 import { registerJobTools } from "./jobs.js";
 import { registerGroupTools } from "./groups.js";
+import { registerSalesNavigatorTools } from "./sales-navigator.js";
+import { registerRecruiterTools } from "./recruiter.js";
+import { registerCompanyAdminTools } from "./company-admin.js";
 
 export function registerAllTools(server: McpServer, curviate: Curviate): void {
   registerAccountTools(server, curviate);
@@ -37,4 +43,7 @@ export function registerAllTools(server: McpServer, curviate: Curviate): void {
   registerInviteTools(server, curviate);
   registerJobTools(server, curviate);
   registerGroupTools(server, curviate);
+  registerSalesNavigatorTools(server, curviate);
+  registerRecruiterTools(server, curviate);
+  registerCompanyAdminTools(server, curviate);
 }
