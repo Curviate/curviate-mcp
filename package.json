@@ -1,8 +1,8 @@
 {
   "name": "@curviate/mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
-  "description": "Official MCP server for the Curviate API: LinkedIn actions for AI agents, over stdio.",
+  "description": "Thin stdio bridge to the hosted Curviate MCP endpoint, for stdio-only clients (Claude Desktop, Claude Code, Cursor). Ships no tool implementations; the hosted server is the single source of truth.",
   "license": "MIT",
   "type": "module",
   "mcpName": "com.curviate/mcp",
@@ -39,9 +39,7 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@curviate/sdk": "^0.18.1",
-    "@modelcontextprotocol/sdk": "^1.29.0",
-    "zod": "^3.25.17"
+    "@modelcontextprotocol/sdk": "^1.29.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.21",
