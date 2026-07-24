@@ -14,6 +14,10 @@ client and the hosted endpoint at `https://app.curviate.com/mcp`. The hosted ser
 truth for the tool surface, so this bridge tracks it with zero drift: a new tool, a changed schema, an updated
 description, all show up the moment the hosted server ships them, with no bridge release required.
 
+> **Availability:** the default hosted endpoint `https://app.curviate.com/mcp` becomes available at the
+> Curviate production launch. Until then, point the bridge at a staging or self-hosted endpoint by setting
+> `CURVIATE_MCP_URL` (see [Configuration](#configuration)).
+
 ## Do you need this package at all?
 
 If your client has native remote MCP support (Claude Code, Claude Desktop Connectors, Claude.ai, ChatGPT
