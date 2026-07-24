@@ -10,7 +10,8 @@ a new tool is a minor; a breaking tool/schema/error-shape change is a major; a f
 
 ## [0.2.0] - 2026-07-21
 
-Reshaped from a local tool reimplementation to a thin stdio bridge (ADR-051). Not yet published to npm.
+Reshaped from a local tool reimplementation to a thin stdio bridge: the package now ships no tool
+implementations and forwards every MCP message to the hosted endpoint.
 
 ### Changed
 
