@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.curviate/mcp",
+  "description": "LinkedIn actions for AI agents: search, messaging, posts and invites, as hosted MCP tools.",
+  "version": "0.3.0",
+  "websiteUrl": "https://docs.curviate.com/reference/mcp/quickstart",
+  "repository": {
+    "url": "https://github.com/Curviate/curviate-mcp",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://app.curviate.com/mcp"
+    }
+  ]
+}
