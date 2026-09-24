@@ -132,7 +132,7 @@ Any client that speaks remote Streamable HTTP can connect. Try OAuth with the ba
 
 Your API key is a full-access workspace credential: anyone holding it can act on every LinkedIn account in the workspace. Create, rotate and revoke it from the key chip in the [dashboard](https://app.curviate.com) top bar, keep it in an environment variable, and reference the variable from the client config rather than the literal key.
 
-Full rules: [Authentication](https://docs.curviate.com/reference/mcp/authentication).
+Full rules: [Authentication](https://docs.curviate.com/reference/mcp/client-setup#authentication).
 
 ## Things to ask your agent
 
@@ -162,7 +162,7 @@ Review the Sales Navigator leads I saved this week and flag the ones who recentl
 |---|---|
 | [MCP quickstart](https://docs.curviate.com/reference/mcp/quickstart) | Connect a client and make a first call |
 | [Client setup](https://docs.curviate.com/reference/mcp/client-setup) | Per-client commands and UI paths |
-| [Authentication](https://docs.curviate.com/reference/mcp/authentication) | OAuth, the Bearer header, and `?token=` |
+| [Authentication](https://docs.curviate.com/reference/mcp/client-setup#authentication) | OAuth, the Bearer header, and `?token=` |
 | [Toolsets](https://docs.curviate.com/reference/mcp/toolsets) | Which tools your client sees, and how to turn more on |
 | [Errors and limits](https://docs.curviate.com/reference/mcp/errors-and-limits) | The error shape, rate limits, safety limits |
 | [Troubleshooting](https://docs.curviate.com/reference/mcp/troubleshooting) | 401s, a missing tool, a dropped session |
