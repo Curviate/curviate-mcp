@@ -25,7 +25,7 @@ Point any MCP client that speaks remote Streamable HTTP at one URL:
 https://app.curviate.com/mcp
 ```
 
-Sign in with OAuth where the client offers it, otherwise send your Curviate API key as an `Authorization: Bearer` header. Your agent then has LinkedIn search, messaging, posts and connection requests as native tools. Sales Navigator and Recruiter tools are off by default and switch on per workspace, and they answer only for a connected account that holds the product: see [Toolsets](https://docs.curviate.com/reference/mcp/toolsets).
+Sign in with OAuth where the client offers it, otherwise send your Curviate API key as an `Authorization: Bearer` header. Your agent then has LinkedIn search, messaging, posts and connection requests as native tools, and Campaigns across LinkedIn and email, Leads, the Unibox, Mailboxes and Signals. Sales Navigator, Recruiter and billing tools are off by default and switch on per person; Sales Navigator and Recruiter tools answer only for a connected account that holds the product, and the billing tools add seats only inside the spending cap your Owner sets: see [Toolsets](https://docs.curviate.com/reference/mcp/toolsets).
 
 You need a [Curviate workspace](https://app.curviate.com) and one connected LinkedIn account. Full walkthrough: [MCP quickstart](https://docs.curviate.com/reference/mcp/quickstart).
 
@@ -154,6 +154,14 @@ Draft a post about what we shipped this week, in my voice, and show it to me bef
 
 ```
 Review the Sales Navigator leads I saved this week and flag the ones who recently changed jobs.
+```
+
+```
+List the people who commented on our posts this week from the Signals, and add the ones who are not Leads yet to my Warm list.
+```
+
+```
+Check the Leads of my Q4 Campaign for missing email addresses, then start it without the ones that have none.
 ```
 
 ## Links
